@@ -17,7 +17,7 @@ def delete_task(args):
 
 def list_tasks(args):
     database.init_db()
-    db = database.get_db()
+    db = database.get_tasks()
     for record in db:
         if args.filter:
             if record["status"] == args.filter:

@@ -36,7 +36,9 @@ def reset_db():
         json.dump([], db)
 
 
-def get_db():
+
+
+def _load_json():
     db_filepath = _get_db_filepath()
     db = []
     with open(db_filepath, "r") as f:
@@ -54,7 +56,7 @@ def _save_db(db):
 def insert_task(description: str):
     if description is None:
         raise ValueError("description is missing")
-    db = get_db()
+    db = _load_json()
     db_filepath = _get_db_filepath()
     last_record = None
     if db:
@@ -73,9 +75,12 @@ def insert_task(description: str):
     _save_db(db)
     
 
+def get_tasks():
+    return _load_json()
+
 
 def update_task(task_id: int, description=None, status=None):
-    db = get_db()
+    db = _load_json()
     for record in db:
         if record["task_id"] == task_id:
             if description is not None:
@@ -87,7 +92,7 @@ def update_task(task_id: int, description=None, status=None):
 
 
 def delete_task(task_id: int):
-    db = get_db()
+    db = _load_json()
     for i, record in enumerate(db):
         if record["task_id"] == task_id:
             db.pop(i)
